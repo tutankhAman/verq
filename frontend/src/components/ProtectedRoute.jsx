@@ -1,26 +1,9 @@
 import { Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { isAuthenticated } from '../services/authService';
+import { useAuth } from '../contexts/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-  const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const isAuth = await isAuthenticated();
-        setAuthenticated(isAuth);
-      } catch (error) {
-        console.error('Auth check error:', error);
-        setAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -30,7 +13,7 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  if (!authenticated) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
