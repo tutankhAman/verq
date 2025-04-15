@@ -34,8 +34,11 @@ app.use(helmet()); // Adds various HTTP headers for security
 app.use(cors({
   origin: ['http://localhost:5173', 'https://verqai.vercel.app', 'https://verq-ai.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-type'],
-  credentials: true
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-type', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Headers', 'Access-Control-Allow-Methods'],
+  exposedHeaders: ['Content-Type', 'Authorization', 'x-auth-type'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 }));
 
 // Rate limiting
