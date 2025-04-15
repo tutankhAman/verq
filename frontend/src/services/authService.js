@@ -9,7 +9,7 @@ import {
 import { auth, googleProvider, githubProvider } from '../config/firebase';
 import { API_BASE_URL } from '../config';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'; // Updated to use environment variable
+const API_URL = import.meta.env.VITE_API_URL || 'https://verq-l9g8.onrender.com'; // Updated to use the correct base URL
 
 // Debug function to log auth service operations
 const logAuthService = (operation, data = {}) => {
@@ -375,12 +375,13 @@ export const signInWithGitHub = async () => {
         localStorage.setItem('firebaseToken', token);
         
         // Check if the user exists in our MongoDB database
-        console.log('Making GitHub auth request to:', `${API_URL}/auth/github`);
-        const response = await fetch(`${API_URL}/auth/github`, {
+        console.log('Making GitHub auth request to:', `${API_URL}/api/auth/github`);
+        const response = await fetch(`${API_URL}/api/auth/github`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
                 uid: user.uid,
@@ -389,6 +390,7 @@ export const signInWithGitHub = async () => {
                 photoURL: user.photoURL,
                 providerData: user.providerData
             }),
+            credentials: 'include'
         });
 
         if (!response.ok) {
