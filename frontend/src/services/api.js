@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 // Helper function to determine auth type
 const getAuthType = (token) => {
@@ -92,88 +92,88 @@ const fetchData = async (endpoint, options = {}) => {
 
 // Specific API methods
 export const api = {
-  // Auth
-  login: (credentials) => 
-    fetchData('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-      includeAuth: false,
-    }),
+    // Auth
+    login: (credentials) => 
+        fetchData('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify(credentials),
+            includeAuth: false,
+        }),
 
-  register: (userData) => 
-    fetchData('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-      includeAuth: false,
-    }),
+    register: (userData) => 
+        fetchData('/auth/register', {
+            method: 'POST',
+            body: JSON.stringify(userData),
+            includeAuth: false,
+        }),
 
-  // User
-  getUserProfile: () => 
-    fetchData('/user/profile'),
+    // User
+    getUserProfile: () => 
+        fetchData('/user/profile'),
 
-  updateUserProfile: (userData) => 
-    fetchData('/user/profile', {
-      method: 'PUT',
-      body: JSON.stringify(userData),
-    }),
+    updateUserProfile: (userData) => 
+        fetchData('/user/profile', {
+            method: 'PUT',
+            body: JSON.stringify(userData),
+        }),
 
-  // Interviews
-  getInterviews: () => 
-    fetchData('/interview'),
+    // Interviews
+    getInterviews: () => 
+        fetchData('/interview'),
 
-  getInterviewById: (id) => 
-    fetchData(`/interview/${id}`),
+    getInterviewById: (id) => 
+        fetchData(`/interview/${id}`),
 
-  generateQuestion: (interviewId) =>
-    fetchData(`/interview/${interviewId}/generate-question`, {
-      method: 'POST'
-    }),
+    generateQuestion: (interviewId) =>
+        fetchData(`/interview/${interviewId}/generate-question`, {
+            method: 'POST'
+        }),
 
-  createInterview: async (formData) => {
-    try {
-      const response = await fetchData('/interview/start', {
-        method: 'POST',
-        body: formData
-      });
-      
-      if (response.status !== 'success' || !response.data || !response.data.interviewId) {
-        throw new Error('Invalid response from server');
-      }
-      return response;
-    } catch (error) {
-      console.error('API Error:', error);
-      throw error;
-    }
-  },
+    createInterview: async (formData) => {
+        try {
+            const response = await fetchData('/interview/start', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.status !== 'success' || !response.data || !response.data.interviewId) {
+                throw new Error('Invalid response from server');
+            }
+            return response;
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
+        }
+    },
 
-  submitAnswer: async (interviewId, formData) => {
-    return await fetchData(`/interview/${interviewId}/answer`, {
-      method: 'POST',
-      body: formData
-    });
-  },
+    submitAnswer: async (interviewId, formData) => {
+        return await fetchData(`/interview/${interviewId}/answer`, {
+            method: 'POST',
+            body: formData
+        });
+    },
 
-  generateFollowUpQuestion: async (interviewId) => {
-    return await fetchData(`/interview/${interviewId}/follow-up`, {
-      method: 'POST'
-    });
-  },
+    generateFollowUpQuestion: async (interviewId) => {
+        return await fetchData(`/interview/${interviewId}/follow-up`, {
+            method: 'POST'
+        });
+    },
 
-  // Generic methods for custom endpoints
-  get: (endpoint) => fetchData(endpoint),
-  post: (endpoint, data, options = {}) => 
-    fetchData(endpoint, {
-      method: 'POST',
-      body: data instanceof FormData ? data : JSON.stringify(data),
-      ...options
-    }),
-  put: (endpoint, data) => 
-    fetchData(endpoint, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }),
-  delete: (endpoint) => 
-    fetchData(endpoint, {
-      method: 'DELETE',
-    }),
-}; 
+    // Generic methods for custom endpoints
+    get: (endpoint) => fetchData(endpoint),
+    post: (endpoint, data, options = {}) => 
+        fetchData(endpoint, {
+            method: 'POST',
+            body: data instanceof FormData ? data : JSON.stringify(data),
+            ...options
+        }),
+    put: (endpoint, data) => 
+        fetchData(endpoint, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+        }),
+    delete: (endpoint) => 
+        fetchData(endpoint, {
+            method: 'DELETE',
+        }),
+};
