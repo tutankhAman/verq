@@ -319,7 +319,7 @@ export const signInWithGoogle = async () => {
         // Store token in localStorage
         localStorage.setItem('firebaseToken', token);
         
-        // Save user to MongoDB
+        // Save user to MongoDB using the correct endpoint
         console.log('Making Google auth request to:', `${API_URL}/api/auth/google`);
         const response = await fetch(`${API_URL}/api/auth/google`, {
             method: 'POST',
@@ -331,7 +331,7 @@ export const signInWithGoogle = async () => {
             body: JSON.stringify({
                 uid: user.uid,
                 email: user.email,
-                displayName: user.displayName,
+                name: user.displayName,
                 photoURL: user.photoURL
             }),
             credentials: 'include'
