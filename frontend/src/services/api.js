@@ -94,14 +94,14 @@ const fetchData = async (endpoint, options = {}) => {
 export const api = {
     // Auth
     login: (credentials) => 
-        fetchData('/auth/login', {
+        fetchData('/api/auth/login', {
             method: 'POST',
             body: JSON.stringify(credentials),
             includeAuth: false,
         }),
 
     register: (userData) => 
-        fetchData('/auth/register', {
+        fetchData('/api/auth/register', {
             method: 'POST',
             body: JSON.stringify(userData),
             includeAuth: false,
@@ -109,29 +109,29 @@ export const api = {
 
     // User
     getUserProfile: () => 
-        fetchData('/user/profile'),
+        fetchData('/api/user/profile'),
 
     updateUserProfile: (userData) => 
-        fetchData('/user/profile', {
+        fetchData('/api/user/profile', {
             method: 'PUT',
             body: JSON.stringify(userData),
         }),
 
     // Interviews
     getInterviews: () => 
-        fetchData('/interview'),
+        fetchData('/api/interview'),
 
     getInterviewById: (id) => 
-        fetchData(`/interview/${id}`),
+        fetchData(`/api/interview/${id}`),
 
     generateQuestion: (interviewId) =>
-        fetchData(`/interview/${interviewId}/generate-question`, {
+        fetchData(`/api/interview/${interviewId}/generate-question`, {
             method: 'POST'
         }),
 
     createInterview: async (formData) => {
         try {
-            const response = await fetchData('/interview/start', {
+            const response = await fetchData('/api/interview/start', {
                 method: 'POST',
                 body: formData
             });
@@ -147,14 +147,14 @@ export const api = {
     },
 
     submitAnswer: async (interviewId, formData) => {
-        return await fetchData(`/interview/${interviewId}/answer`, {
+        return await fetchData(`/api/interview/${interviewId}/answer`, {
             method: 'POST',
             body: formData
         });
     },
 
     generateFollowUpQuestion: async (interviewId) => {
-        return await fetchData(`/interview/${interviewId}/follow-up`, {
+        return await fetchData(`/api/interview/${interviewId}/follow-up`, {
             method: 'POST'
         });
     },
