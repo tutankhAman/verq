@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '../services/api';
+import RecordingBlob from '../components/RecordingBlob';
 
 const ServiceNode = ({ service, status, isActive }) => (
   <motion.div
@@ -59,6 +60,7 @@ function InterviewSession() {
   const [isGeneratingQuestion, setIsGeneratingQuestion] = useState(false);
   const [overallEvaluation, setOverallEvaluation] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
+  const [audioStream, setAudioStream] = useState(null);
 
   // Get the actual interviewId from either params or localStorage
   const interviewId = paramsInterviewId || (() => {
@@ -151,6 +153,8 @@ function InterviewSession() {
         }
       });
       
+      setAudioStream(stream); // Store the stream
+      
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'audio/webm;codecs=opus',
         audioBitsPerSecond: 128000
@@ -199,6 +203,7 @@ function InterviewSession() {
       }
       
       setIsRecording(false);
+      setAudioStream(null); // Clear the stream
     }
   };
 
@@ -374,6 +379,7 @@ function InterviewSession() {
                     </motion.button>
                   ) : (
                     <>
+                      <RecordingBlob isActive={isRecording} stream={audioStream} />
                       <div className="text-center mb-2">
                         <span className="text-sm text-gray-400">
                           Recording: {Math.floor(recordingTime / 60)}:{(recordingTime % 60).toString().padStart(2, '0')}
